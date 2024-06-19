@@ -16,4 +16,4 @@ def clean_and_transform_photo(photo_path, output_size=(512, 512)):
         print(f"An error occurred: {e}")
         return
 
-transformed_image = clean_and_transform_photo("images/1.jpg")
+# transformed_image = clean_and_transform_photo("images/1.jpg")
