@@ -13,5 +13,5 @@ def image_embedding(image_path: str):
 
     image_features = model.encode_image(image)
 
-    return image_features.tolist()
+    return image_features
 
