@@ -13,6 +13,14 @@ pip install git+https://github.com/openai/CLIP.git
 uvicorn main:app --reload
 ```
 
+### Data jobs
+
+#### A) Embedding images from folder `./images/`
+
+```bash
+python cli.py
+```
+
 ### Testing
 
 ```bash
