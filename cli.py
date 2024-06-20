@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-from scripts.load_images import encode_image_job
+from scripts.embedding_image_folder import encode_image_job
 
 load_dotenv()
 

@@ -3,6 +3,11 @@ from pinecone import Pinecone
 import json
 from utiles.image_embedding import image_embedding
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+EMBEDDING_FILE = "./database/image_embeddings.json"
 
 image_folder = os.getenv("IMAGE_FOLDER")
 image_files = os.listdir(image_folder)
@@ -11,6 +16,7 @@ def encode_image_job():
     db_type = os.getenv("DB_TYPE")
     image_embeddings = {}
     for image_file in image_files:
+        print(f"EMBEDDING | {image_file}")
         image_path = os.path.join(image_folder, image_file)
         image_embeddings[image_file] = image_embedding(image_path)
 
@@ -42,5 +48,5 @@ def encode_image_job():
             print(f"Images {image_file} embedded and stored in Pinecone database successfully.")
         
     if db_type == "JSON":
-        with open("./database/image_embeddings.json", "w") as f:
+        with open(EMBEDDING_FILE, "w") as f:
             json.dump(image_embeddings, f)

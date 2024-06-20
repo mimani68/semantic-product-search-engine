@@ -17,10 +17,10 @@ with torch.no_grad():
     image_features = model.encode_image(torch.stack(image_database_processed))
     text_features = model.encode_text(text)
 
-with open("./database/image_embeddings.json", "w") as f:
+with open("./database/image_db.json", "w") as f:
     json.dump(image_features.tolist(), f)
 
-with open("./database/image_embeddings.json", "r") as f:
+with open("./database/image_db.json", "r") as f:
     image_features_loaded = json.loads(f.read())
     image_features_loaded = torch.stack([torch.Tensor(item) for item in image_features_loaded])
 

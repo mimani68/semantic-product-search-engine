@@ -1,27 +1,44 @@
-from typing import List
-from pydantic import BaseModel
+import json, os
 
-class SearchRequest(BaseModel):
-    query_string: str
-    search_method: str  # e.g., 'simple', 'advanced'
+from utiles.query_for_images import semantic_images_query
 
-class Product(BaseModel):
-    id: int
-    name: str
-    description: str
-    price: float
+def semantic_image_search_service(query_text: str):
+    if not query_text:
+        return {
+            "message": "Query is not defined."
+        }
+    
+    # load database embedded result
+    with open("./database/image_db.json", "r") as f:
+        image_features_loaded = json.loads(f.read())
 
-# Mock products data
-products = [
-    Product(id=1, name="Product A", description="An awesome product A", price=25.50),
-    Product(id=2, name="Product B", description="A fantastic product B", price=45.00),
-    Product(id=3, name="Product C", description="A superb product C", price=75.75),
-]
+    # define score of ranking
+    result = semantic_images_query(query_text, image_features_loaded, 2)
 
-def simple_search(query_string: str) -> List[Product]:
-    # Perform a simple search based on the query string
-    return [p for p in products if query_string.lower() in p.name.lower()]
+    return {
+        "result": result
+    }
 
-def advanced_search() -> List[Product]:
-    # Perform an advanced search (Mock implementation)
-    return products
+def text_search_service(query_text: str):
+    if not query_text:
+        return {
+            "message": "Query is not defined."
+        }
+
+    #  Using pinacone
+
+    return {
+        "result": []
+    }
+
+def hybrid_search_service(query_text: str):
+    if not query_text:
+        return {
+            "message": "Query is not defined."
+        }
+
+    #  Using pinacone
+
+    return {
+        "result": []
+    }
