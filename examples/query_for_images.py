@@ -1,5 +1,4 @@
-import torch
-import clip
+import torch, clip, json
 from PIL import Image
 
 NUMBER_OF_RANK=2
@@ -18,9 +17,16 @@ with torch.no_grad():
     image_features = model.encode_image(torch.stack(image_database_processed))
     text_features = model.encode_text(text)
 
-image_features /= image_features.norm(dim=-1, keepdim=True)
+with open("./database/image_embeddings.json", "w") as f:
+    json.dump(image_features.tolist(), f)
+
+with open("./database/image_embeddings.json", "r") as f:
+    image_features_loaded = json.loads(f.read())
+    image_features_loaded = torch.stack([torch.Tensor(item) for item in image_features_loaded])
+
+image_features_loaded /= image_features_loaded.norm(dim=-1, keepdim=True)
 text_features /= text_features.norm(dim=-1, keepdim=True)
-similarity = (100.0 * text_features @ image_features.T).softmax(dim=-1)
+similarity = (100.0 * text_features @ image_features_loaded.T).softmax(dim=-1)
 values, indices = similarity[0].topk(NUMBER_OF_RANK)
 
 print("Top predictions:")
