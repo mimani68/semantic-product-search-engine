@@ -1,9 +1,9 @@
 pinecone-client
 ftfy
 regex
-penai
+openai
 fastapi
 tqdm
-torch
 pandas
 numpy
+torch
