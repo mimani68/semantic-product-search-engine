@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 
-from scripts.embedding_image_folder import encode_image_job
+from scripts.embedding_product_file import product_encoding_job
 
 load_dotenv()
 
-encode_image_job()
+product_encoding_job()
