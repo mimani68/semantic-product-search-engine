@@ -15,7 +15,7 @@ def db_ops(args):
 
     # List of ids
     print('🚩 List of ids')
-    for ids in index.list(namespace=os.getenv('PINECONE_NAMESPACE')):
+    for ids in index.list(namespace=os.getenv('PINECONE_NAMESPACE'), limit=100):
         print(ids)
 
     # List of items
