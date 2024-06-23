@@ -7,9 +7,12 @@ def db_ops(args):
     index = conn.Index(os.getenv('PINECONE_INDEX'))
 
     # Delete namespace
-    # index.delete(delete_all=True, namespace=os.getenv('PINECONE_INDEX'))
+    # index.delete(delete_all=True, namespace=os.getenv('PINECONE_NAMESPACE'))
 
-    # INDEX status
+    # Delete one element
+    # index.delete(ids=['4353063_12232972'], namespace=os.getenv('PINECONE_NAMESPACE'))
+
+    INDEX status
     print('🚩 INDEX status')
     print(index.describe_index_stats())
 
@@ -27,7 +30,7 @@ def db_ops(args):
     )
     print(items.vectors)
 
-    # Get example
-    print('🚩 Get single item')
-    sample_item = index.fetch(["id1016190_Multi"], namespace=os.getenv('PINECONE_NAMESPACE'))
-    print(sample_item)
+    # # Get example
+    # print('🚩 Get single item')
+    # sample_item = index.fetch(["id1016190_Multi"], namespace=os.getenv('PINECONE_NAMESPACE'))
+    # print(sample_item)
