@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Search</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Product Search</h1>
+        <div class="mb-3 row">
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="searchQuery" placeholder="Enter your search term">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" id="searchMethod">
+                    <option value="image" selected>Image</option>
+                    <option value="hybrid">Hybrid (Image & Text)</option>
+                    <option value="text">Text</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="searchButton">Search</button>
+        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3" id="searchResults"></div>
+    </div>
+
+    <script>
+
+        const searchResults = document.getElementById('searchResults');
+        const searchButton = document.getElementById('searchButton');
+
+        searchButton.addEventListener('click', async () => {
+            const searchQuery = document.getElementById('searchQuery').value;
+            const selectedMethod = document.getElementById('searchMethod').value;
+
+            // Prepare search data
+            const searchData = {
+                query_string: searchQuery,
+                search_method: "image"
+            };
+
+            if (selectedMethod === "image") {
+                searchData.search_method = "image";
+            } else if (selectedMethod === "hybrid") {
+                searchData.search_method = "hybrid";
+            } else if (selectedMethod === "text") {
+                searchData.search_method = "text";
+            }
+
+            const response = await fetch(window.origin + '/api/search/semantic', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(searchData)
+            });
+
+            if (response.ok) {
+                let data = await response.json();
+                data = data.data
+                searchResults.innerHTML = '';
+
+                data.forEach(product => {
+                    const card = document.createElement('div');
+                    card.classList.add('col');
+
+                    const cardContent = `
+            <div class="card">
+              <img src="${product.metadata.images[0]}" class="card-img-top" alt="${product.metadata.name}">
+              <div class="card-body">
+                <h5 class="card-title">${product.metadata.name}</h5>
+              </div>
+            </div>
+          `;
+
+                    card.innerHTML = cardContent;
+                    searchResults.appendChild(card);
+                });
+            } else {
+                alert('Error fetching search results');
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

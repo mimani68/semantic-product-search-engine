@@ -1,5 +1,6 @@
-import os, json
+import os
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from service.search import hybrid_search_service, semantic_image_search_service, text_search_service
@@ -8,6 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 class SearchRequest(BaseModel):
     query_string: str
