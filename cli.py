@@ -2,7 +2,6 @@ import argparse
 import logging
 
 from scripts.embedding_product_file import product_encoding_job
-from scripts.embedding_sample_image_folder import encode_image_job
 from scripts.database_provisioning import pinecone_db_provisioning
 
 def main():
@@ -14,11 +13,14 @@ def main():
     index_creator.add_argument('--namespace')
     index_creator.set_defaults(func=pinecone_db_provisioning)
 
+    job_crawling = subparsers.add_parser('job_crawling', help='A tools for download product list and store in db')
+    job_crawling.set_defaults(func=product_encoding_job)
+    
     args = parser.parse_args()
 
     if hasattr(args, 'func'):
-        if args.loglevel:
-            logging.basicConfig(level=args.loglevel.upper())
+        # if args.loglevel:
+        #     logging.basicConfig(level=args.loglevel.upper())
         args.func(args)
         return 0
     else:

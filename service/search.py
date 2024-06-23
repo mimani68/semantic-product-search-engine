@@ -30,7 +30,7 @@ def semantic_image_search_service(query_text: str, number: int):
     }
 
 
-def text_search_service(query_text: str):
+def text_search_service(query_text: str, number: int):
     if not query_text:
         return {
             "message": "Query is not defined."
@@ -61,6 +61,9 @@ def hybrid_search_service(query_text: str, number : int):
         return {
             "message": "Query is not defined."
         }
+    
+    if not number:
+        number = 10
 
     # Embed query string
     embedded_query_text = text_embedding(query_text)
@@ -77,7 +80,6 @@ def hybrid_search_service(query_text: str, number : int):
         },
         include_values=True
     )
-
 
     return {
         "result": result
