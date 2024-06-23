@@ -22,21 +22,12 @@ def encode_image_job():
 
         if db_type != "JSON":
             api_key = os.getenv("PINECONE_API_KEY")
-            index_name = os.getenv("INDEX_NAME")
-            namespace = os.getenv("NAMESPACE")
+            index_name = os.getenv("PINECONE_INDEX_NAME")
+            namespace = os.getenv("PINECONE_NAMESPACE")
             pc = Pinecone(
                 api_key=api_key,
-                # proxy_url='https://your-proxy.com'
             )
-            # pc.create_index(
-            #     name=index_name,
-            #     dimension=1536,
-            #     metric='euclidean',
-            #     # spec=ServerlessSpec(
-            #     #     cloud='aws',
-            #     #     region='us-west-2'
-            #     # )
-            # )
+
             index = pc.Index(host=index_name)
             upsert_response = index.upsert(
                 vectors=[
