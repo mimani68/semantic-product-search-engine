@@ -9,6 +9,6 @@ def text_embedding(query: str):
     with torch.no_grad():
         text_features = model.encode_text(text)
 
-    return text_features
+    return text_features.tolist()
         
 

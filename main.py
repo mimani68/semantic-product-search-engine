@@ -1,4 +1,4 @@
-import os
+import os, json
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -16,21 +16,27 @@ class SearchRequest(BaseModel):
 @app.post("/api/search/semantic")
 async def semantic_search(search_request: SearchRequest):
     try:
+        result = []
+        
         if search_request.search_method == "image":
-            result = semantic_image_search_service(search_request.query_string)
-            return result
-        if search_request.search_method == "text":
-            result = text_search_service(search_request.query_string)
-            return result
-        if search_request.search_method == "hybrid":
-            result = hybrid_search_service(search_request.query_string)
-            return result
+            result = semantic_image_search_service(search_request.query_string, 10)
+        elif search_request.search_method == "text":
+            result = text_search_service(search_request.query_string, 10)
+        elif search_request.search_method == "hybrid":
+            result = hybrid_search_service(search_request.query_string, 10)
         else:
             result = text_search_service(search_request.query_string)
-            return result
+
+        return {
+            'success': True,
+            'data': [ item.to_dict() for item in result['matches'] ]
+            }
+    except Exception as err:
+        print(err)
+        raise HTTPException(status_code=400, detail="Error happened.")
     except:
         print("An exception occurred")
-        raise HTTPException(status_code=400, detail="Unsupported search method")
+        raise HTTPException(status_code=400, detail="Unsupported search method.")
 
 
 if __name__ == "__main__":

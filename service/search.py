@@ -1,6 +1,6 @@
 import os
 
-from utiles import text_embedding
+from utiles.text_embedding import text_embedding
 from utiles.database.pinecone import connection
 
 def semantic_image_search_service(query_text: str, number: int):
@@ -20,14 +20,12 @@ def semantic_image_search_service(query_text: str, number: int):
     index = conn.Index(os.getenv('PINECONE_INDEX'))
     result = index.query(
         namespace=os.getenv('PINECONE_NAMESPACE'),
-        vector=embedded_query_text,
+        vector=embedded_query_text[0],
         top_k=number,
-        include_values=True
+        include_values=False,
+        include_metadata=True
     )
-
-    return {
-        "result": result
-    }
+    return result
 
 
 def text_search_service(query_text: str, number: int):
@@ -48,12 +46,10 @@ def text_search_service(query_text: str, number: int):
         filter={
             "title": {"$eq": query_text},
         },
-        include_values=True
+        include_values=False,
+        include_metadata=True
     )
-
-    return {
-        "result": result
-    }
+    return result
 
 
 def hybrid_search_service(query_text: str, number : int):
@@ -78,9 +74,7 @@ def hybrid_search_service(query_text: str, number : int):
         filter={
             "title": {"$eq": query_text},
         },
-        include_values=True
+        include_values=False,
+        include_metadata=True
     )
-
-    return {
-        "result": result
-    }
+    return result

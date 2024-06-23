@@ -34,6 +34,8 @@ python3 cli.py job_crawling
 python3 cli.py db_ops
 ```
 
+![](./docs/cli-database-ops.png)
+
 ### Testing
 
 ```bash
@@ -42,3 +44,4 @@ curl -X POST http://127.0.0.1:8000/api/search/semantic \
    -d '{"query_string": "black", "search_method": "image"}'
 ```
 
+![](./docs/search.png)
