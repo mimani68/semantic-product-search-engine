@@ -18,9 +18,15 @@ uvicorn main:app --reload
 #### A) Embedding images from folder `./images/`
 
 ```bash
-python cli.py index_creator \
+python cli.py create_index \
    --loglevel=error \
    --namespace=product-search
+```
+
+#### B) Create job
+
+```bash
+python3 cli.py job_crawling
 ```
 
 ### Testing

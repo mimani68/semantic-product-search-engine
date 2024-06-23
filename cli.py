@@ -8,10 +8,10 @@ def main():
     parser = argparse.ArgumentParser(description="Data processing and indexing tool")
     subparsers = parser.add_subparsers(help='sub-command help')
 
-    index_creator = subparsers.add_parser('index_creator', help='A tools for create database provisioning')
-    index_creator.add_argument('--loglevel')
-    index_creator.add_argument('--namespace')
-    index_creator.set_defaults(func=pinecone_db_provisioning)
+    create_index = subparsers.add_parser('create_index', help='A tools for create database provisioning')
+    create_index.add_argument('--loglevel')
+    create_index.add_argument('--namespace')
+    create_index.set_defaults(func=pinecone_db_provisioning)
 
     job_crawling = subparsers.add_parser('job_crawling', help='A tools for download product list and store in db')
     job_crawling.set_defaults(func=product_encoding_job)

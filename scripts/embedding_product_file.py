@@ -17,7 +17,7 @@ def product_encoding_job(args):
     pc = Pinecone(
         api_key=api_key,
     )
-    index = pc.Index(host=index_name)
+    index = pc.Index(name=index_name)
 
     with open(PRODUCT_JSON_FILE, "r") as f:
         products = json.loads(f.read())
@@ -32,16 +32,25 @@ def product_encoding_job(args):
         
         # Get/Download image
         response = requests.get(item['images'][0])
+        if response.status_code != 200:
+            print(f"Encounter download {item['name']} image")
+            continue
 
         # Insert to database 
         upsert_response = index.upsert(
             vectors=[
-                ("embedding", image_embedding(response.content), 
+                ("embedding", image_embedding(response.content)[0], 
                     {
                         "code": item['code'],
-                        "name": item['name'],
-                        "keywords": item['keywords'],
-                        "description": item['description'],
+                        "name": item['name'] or "*",
+                        # "keywords": item['keywords'],
+                        "description": item['description'] or "*",
+                        "brand_name": item['brand_name'] or "*",
+                        "material": item['material'] or "*",
+                        "rating": item['rating'] or "*",
+                        "current_price": item['current_price'] or "*",
+                        "old_price": item['old_price'] or "*",
+                        "off_percent": item['off_percent'] or "*",
                     }
                 ),
             ],
