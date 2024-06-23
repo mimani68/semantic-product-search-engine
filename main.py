@@ -5,6 +5,9 @@ from pydantic import BaseModel
 from service.mock_search import simple_search, advanced_search
 from service.search import hybrid_search_service, semantic_image_search_service, text_search_service
 
+from dotenv import load_dotenv
+load_dotenv()
+
 app = FastAPI()
 
 class SearchRequest(BaseModel):
