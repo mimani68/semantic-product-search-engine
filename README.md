@@ -19,7 +19,6 @@ uvicorn main:app --reload
 
 ```bash
 python cli.py create_index \
-   --loglevel=error \
    --namespace=product-search
 ```
 
@@ -29,11 +28,17 @@ python cli.py create_index \
 python3 cli.py job_crawling
 ```
 
+#### D) Check database status
+
+```bash
+python3 cli.py db_ops
+```
+
 ### Testing
 
 ```bash
 curl -X POST http://127.0.0.1:8000/api/search/semantic \
    -H 'Content-Type: application/json' \
-   -d '{"query_string": "car", "search_method": "image"}'
+   -d '{"query_string": "black", "search_method": "image"}'
 ```
 

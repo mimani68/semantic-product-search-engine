@@ -39,11 +39,12 @@ def product_encoding_job(args):
         # Insert to database 
         upsert_response = index.upsert(
             vectors=[
-                ("embedding", image_embedding(response.content)[0], 
-                    {
+                {
+                    "id": item['code'],
+                    "values": image_embedding(response.content)[0], 
+                    "metadata": {
                         "code": item['code'],
                         "name": item['name'] or "*",
-                        # "keywords": item['keywords'],
                         "description": item['description'] or "*",
                         "brand_name": item['brand_name'] or "*",
                         "material": item['material'] or "*",
@@ -52,7 +53,7 @@ def product_encoding_job(args):
                         "old_price": item['old_price'] or "*",
                         "off_percent": item['off_percent'] or "*",
                     }
-                ),
+                }
             ],
             namespace=namespace
         )
